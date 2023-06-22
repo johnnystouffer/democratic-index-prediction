@@ -1,0 +1,39 @@
+body
+{
+background: #191919; 
+}
+
+.dashboard {
+    background-color: #191919;
+}
+
+.app-bar {
+    background-color: #222222;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #444444;
+}
+
+.title-box {
+    border: 2px solid #222222;
+    border-radius: 5px;
+    padding: 10px;
+
+}
+
+.dashboard-title {
+    color: white;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 0;
+
+}
+
+.graph-container {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
