@@ -3,8 +3,24 @@ body
 background: #191919; 
 }
 
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #FFFFFF;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+.content {
+    margin-top: 70px;
+}  
+
 .dashboard {
     background-color: #191919;
+    padding-top: 70px;
 }
 
 .app-bar {
@@ -12,7 +28,7 @@ background: #191919;
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 10px;
-    border: 1px solid #444444;
+    border: 20px solid #191919;
 }
 
 .title-box {
@@ -23,17 +39,75 @@ background: #191919;
 }
 
 .dashboard-title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #222222;
     color: white;
     font-family: "Times New Roman", Times, serif;
     font-size: 40px;
     text-align: center;
     margin-bottom: 0;
     margin-top: 0;
+    padding: 10px 0;
+    z-index: 999;
+}
+  
+  
 
+.content {
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+  
+  
+
+
+@media (max-width: 1800px) {
+    .graph-container {
+      width: 100%;
+    }
 }
 
-.graph-container {
+.subplots-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+  
+  
+  
+.subplot {
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+  
+  
+
+.graph-container .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+  
+  
+.rounded-corners {
+    border-radius: 10px;
+}
+  
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 10px;
     overflow: hidden;
+    margin-top: 20px;
 }
-
+  
