@@ -4,10 +4,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df = pd.read_csv('final_pivot.csv')
-pie = pd.read_csv('world_predictions.csv')
-all_data = pd.read_csv('all.csv')
-difference = pd.read_csv('difference.csv')
+df = pd.read_csv('fixed_data/final_pivot.csv')
+pie = pd.read_csv('fixed_data/world_predictions.csv')
+all_data = pd.read_csv('fixed_data/all.csv')
+difference = pd.read_csv('fixed_data/difference.csv')
 
 """
 
