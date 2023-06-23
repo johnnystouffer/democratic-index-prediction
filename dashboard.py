@@ -43,11 +43,11 @@ slider_steps = [
 
 layout_map = go.Layout(
     title={
-        'text': 'GLOBAL DEMOCRATIC INDEX',
+        'text': 'Global Democratic Index',
         'font': {
-            'size': 20,
+            'size': 28,
             'color': 'white',
-            'family': 'Kalice',
+            'family': 'Verdana',
         },
         'x': 0.5,
         'y': 0.95,
@@ -74,15 +74,12 @@ map_fig.update_layout(
     paper_bgcolor='#222222',
     width=1800,
     height=800,
-    font=dict(color='white', family='Kalice', size=12),
+    font=dict(color='white', family='Valenica', size=12),
 )
 map_fig.update_geos(bgcolor='#222222')
 
 """
-
-SECOND VISUALIZATION:
 BAR CHART
-
 """
 
 bar_fig = go.Figure(data=go.Bar(
@@ -101,15 +98,15 @@ bar_fig.update_layout(
     title={
         'text': 'Predicted Change In Fastest Developing and Influential Countries',
         'font': {
-            'size': 24,
+            'size': 18,
             'color': 'white',
-            'family': 'Kalice',
+            'family': 'Verdana',
         },
         'x': 0.5,
         'y': 0.98,
     },
-    xaxis_title='Change',
-    yaxis_title='Country',
+    xaxis_title='Country',
+    yaxis_title='Change In Index from 2030-2022',
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
     width=800,
@@ -119,8 +116,8 @@ bar_fig.update_layout(
     yaxis=dict(showgrid=False, showline=False, zeroline=False, tickfont=dict(size=12)),
     font=dict(
         color='white',
-        family='Kalice',
-        size=16
+        family='Verdana',
+        size=12
     )
 )
 
@@ -146,7 +143,7 @@ line_fig = go.Figure(data=[scatter_trace])
 line_fig.update_layout(
     title={
         'text': 'Difference in Average Index Value Between Years',
-        'font': {'size': 20, 'color': 'white', 'family': 'Kalice'},
+        'font': {'size': 18, 'color': 'white', 'family': 'Verdana'},
         'x': 0.5,
         'y': 0.95,
     },
@@ -154,7 +151,7 @@ line_fig.update_layout(
     yaxis_title='Difference',
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
-    font=dict(color='white', family='Kalice', size=12),
+    font=dict(color='white', family='Verdana', size=12),
     width=800,
     height=600,
 )
@@ -190,9 +187,9 @@ stack_fig.update_layout(
     title={
         'text': 'Proportion of each Type of Democracy Over Time',
         'font': {
-            'size': 30,
+            'size': 18,
             'color': 'white',
-            'family': 'Kalice',
+            'family': 'Verdana',
         },
         'x': 0.5,
         'y': 0.95,
@@ -210,7 +207,7 @@ stack_fig.update_layout(
         itemclick=False,
         title=dict(text='Type'),
     ),
-    font=dict(color='white', family='Kalice', size=12),
+    font=dict(color='white', family='Verdana', size=12),
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
     width=800,
@@ -249,9 +246,9 @@ layout_pie = go.Layout(
     title={
         'text': 'Proportion of Each Regime Type over the Years',
         'font': {
-            'size': 30,
+            'size': 18,
             'color': 'white',
-            'family': 'Kalice',
+            'family': 'Verdana',
         },
         'x': 0.5,
         'y': 0.95,
@@ -265,7 +262,7 @@ pie_fig.update_layout(
     paper_bgcolor='#222222',
     width=800,
     height=600,
-    font=dict(color='white', family='Kalice', size=12),
+    font=dict(color='white', family='Verdana', size=12),
 )
 pie_fig.update_traces(marker=dict(colors=['#003300', '#004400', '#006600', '#008800']))
 
@@ -284,7 +281,7 @@ app.layout = html.Div(
             children=[
                 html.Nav(
                     children=[
-                        html.H1("Democratic Index: Past and Future Predictions", className="dashboard-title")
+                        html.H1("DEMOCRATIC INDEX: Analysis and Predictions", className="dashboard-title")
                     ]
                 )
             ]
@@ -296,6 +293,12 @@ app.layout = html.Div(
                     className="graph-container",
                     children=[
                         dcc.Graph(figure=map_fig)
+                    ]
+                ),
+                html.Div(
+                    className="image-container",
+                    children=[
+                        html.Img(src="assets/what_is_dem.png", style={'width': '100%', 'height': '100%'}, className="image")
                     ]
                 ),
                 html.Div(
@@ -335,7 +338,7 @@ app.layout = html.Div(
                 html.Div(
                     className="image-container",
                     children=[
-                        html.Img(src="assets/summary.png", style={'width': '70%', 'height': '90%'}, className="image")
+                        html.Img(src="assets/sum.png", style={'width': '100%', 'height': '100%'}, className="image")
                     ]
                 )
             ]
