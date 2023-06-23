@@ -272,7 +272,7 @@ END OF VISUALS START OF APP
 
 app = Dash(__name__, external_stylesheets=['assets/style.css'])
 
-# Define the layout
+# App Layout of each Graph and the Navbar
 app.layout = html.Div(
     className="dashboard",
     children=[
@@ -282,7 +282,7 @@ app.layout = html.Div(
                 html.Nav(
                     children=[
                         html.H1("DEMOCRATIC INDEX: Analysis and Predictions", className="dashboard-title")
-                    ]
+                    ] # Navigation Bar
                 )
             ]
         ),
@@ -293,13 +293,13 @@ app.layout = html.Div(
                     className="graph-container",
                     children=[
                         dcc.Graph(figure=map_fig)
-                    ]
+                    ] # Map 
                 ),
                 html.Div(
                     className="image-container",
                     children=[
                         html.Img(src="assets/what_is_dem.png", style={'width': '100%', 'height': '100%'}, className="image")
-                    ]
+                    ] # Democratic Index Explanation Image
                 ),
                 html.Div(
                     className="subplots-container",
