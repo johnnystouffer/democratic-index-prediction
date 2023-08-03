@@ -1,5 +1,13 @@
 # Democratic Index: Analysis and Prediction
 
+# TO VIEW DEMO CLICK HERE
+
+## Results
+
+- In summary, it was found that overall democracy is decreasing across the world and it is not tied to a region or how developed a country is.
+- Although as can be seen in the stacked plot Liberal Democracies (which are the most democratic) are actually increasing in numbers, and what this shows is although on AVERAGE democracy is going down, in reality, countries are becoming more EXTREME and not in between Authoritarian and Democratic
+- We can also see that developed countries with little change compared to developing countries have a more extreme change in their democracies.
+- Lastly, we can see from the line plot, we are currently in the longest trend of democracy falling since they recorded the Democratic INdex, and with our predictions that trend is likely to continue.
 
 ## Project Inspiration
 
@@ -39,13 +47,6 @@
 ### dashboard.py
 
 - The file has all the necessary data and visuals to run the dashboard Using Plotly Dash and Plotly Go along with all other Python packages to make it work, like NumPy and Pandas
-
-## Results
-
-- In summary, it was found that overall democracy is decreasing across the world and it is not tied to a region or how developed a country is.
-- Although as can be seen in the stacked plot Liberal Democracies (which are the most democratic) are actually increasing in numbers, and what this shows is although on AVERAGE democracy is going down, in reality, countries are becoming more EXTREME and not in between Authoritarian and Democratic
-- We can also see that developed countries with little change compared to developing countries have a more extreme change in their democracies.
-- Lastly, we can see from the line plot, we are currently in the longest trend of democracy falling since they recorded the Democratic INdex, and with our predictions that trend is likely to continue.
 
 ## Acknowledgements
 
