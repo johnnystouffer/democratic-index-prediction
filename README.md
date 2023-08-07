@@ -1,6 +1,6 @@
 # Democratic Index: Analysis and Prediction
 
-# TO VIEW DEMO [CLICK HERE] (https://democratic-index-prediction.onrender.com)
+# TO VIEW DEMO [CLICK HERE](https://democratic-index-prediction.onrender.com)
 
 ## Results
 
