@@ -61,8 +61,6 @@
 - I was unaware of how many datasets I would need, and I was also unaware of the different assets I was going to need to make it look nice, so I ended up being very unorganized and cluttered for a while, making the project unnecessarily harder.
 
 ### Project by John Stouffer
-#### _Incoming Sophomore - Data Science_
-#### _4/22/2023 - 6/23/2023_
 
 ### Socials
 - LinkedIn - https://www.linkedin.com/in/johnny-stouffer/
