@@ -271,6 +271,7 @@ END OF VISUALS START OF APP
 """
 
 app = Dash(__name__, external_stylesheets=['assets/style.css'])
+server = app.server
 
 # App Layout of each Graph and the Navbar
 app.layout = html.Div(
