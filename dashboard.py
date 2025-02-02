@@ -1,24 +1,24 @@
 from dash import Dash, dcc, html
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
+# Load Data
 df = pd.read_csv('fixed_data/final_pivot.csv')
 pie = pd.read_csv('fixed_data/world_predictions.csv')
 all_data = pd.read_csv('fixed_data/all.csv')
 difference = pd.read_csv('fixed_data/difference.csv')
 
+# Initialize Dash App
+app = Dash(__name__, external_stylesheets=['assets/style.css'])
+server = app.server
+
 """
-
-FIRST VISUALIZATION:
-CHLOROPLETH MAP
-
+CHOROPLETH MAP
 """
 
 dark_green_scale = [[0, '#002200'], [1, '#009900']]
-
 traces = []
+
 for year in df.columns[2:]:
     trace = go.Choropleth(
         locations=df['Code'],
@@ -37,44 +37,23 @@ for year in df.columns[2:]:
 traces[0]['visible'] = True
 
 slider_steps = [
-    {'label': str(year), 'method': 'update', 'args': [{'visible': [y == year for y in df.columns[2:]]}, {'title': f"Global Democratic Index - {year}"}]}
+    {
+        'label': str(year),
+        'method': 'update',
+        'args': [{'visible': [y == year for y in df.columns[2:]]}, {'title': f"Global Democratic Index - {year}"}]
+    }
     for year in df.columns[2:133]
 ]
 
-layout_map = go.Layout(
-    title={
-        'text': 'Global Democratic Index',
-        'font': {
-            'size': 28,
-            'color': 'white',
-            'family': 'Verdana',
-        },
-        'x': 0.5,
-        'y': 0.95,
-    },
-    geo=dict(
-        showframe=False,
-        showcoastlines=False,
-        projection_type='equirectangular'
-    ),
-    sliders=[
-        {
-            'active': 0,
-            'currentvalue': {"prefix": "Year: "},
-            'pad': {"t": 50},
-            'steps': slider_steps
-        }
-    ],
-)
-
-map_fig = go.Figure(data=traces, layout=layout_map)
-
+map_fig = go.Figure(data=traces)
 map_fig.update_layout(
+    title='Global Democratic Index',
+    geo=dict(showframe=False, showcoastlines=False, projection_type='equirectangular'),
+    sliders=[{'active': 0, 'currentvalue': {'prefix': 'Year: '}, 'pad': {'t': 50}, 'steps': slider_steps}],
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
-    width=1800,
-    height=800,
-    font=dict(color='white', family='Valenica', size=12),
+    font=dict(color='white', family='Verdana', size=12),
+    margin=dict(l=20, r=20, t=50, b=20)
 )
 map_fig.update_geos(bgcolor='#222222')
 
@@ -85,75 +64,41 @@ BAR CHART
 bar_fig = go.Figure(data=go.Bar(
     y=all_data['Change'],
     x=all_data['Country'],
-    orientation='v',
-    marker=dict(
-        color=all_data['Change'],
-        colorscale='Greens',
-        cmin=all_data['Change'].min(),
-        cmax=all_data['Change'].max()
-    )
+    marker=dict(color=all_data['Change'], colorscale='Greens', cmin=all_data['Change'].min(), cmax=all_data['Change'].max())
 ))
 
 bar_fig.update_layout(
-    title={
-        'text': 'Predicted Change In Fastest Developing and Influential Countries',
-        'font': {
-            'size': 18,
-            'color': 'white',
-            'family': 'Verdana',
-        },
-        'x': 0.5,
-        'y': 0.98,
-    },
+    title='Predicted Change In Fastest Developing and Influential Countries',
     xaxis_title='Country',
     yaxis_title='Change In Index from 2030-2022',
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
-    width=800,
-    height=600,
-    margin=dict(l=50, r=50, t=50, b=50),
-    xaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray', showline=True, linewidth=1, linecolor='black'),
-    yaxis=dict(showgrid=False, showline=False, zeroline=False, tickfont=dict(size=12)),
-    font=dict(
-        color='white',
-        family='Verdana',
-        size=12
-    )
+    font=dict(color='white', family='Verdana', size=12),
+    margin=dict(l=20, r=20, t=70, b=20),
+    height=400
 )
-
-bar_fig.update_traces(marker=dict(colorscale=[[0, '#90EE90'], [1, '#006400']]))
 
 """
 LINE PLOT
 """
 
-scatter_trace = go.Scatter(
+line_fig = go.Figure(data=go.Scatter(
     x=difference['Year'],
     y=difference['Difference'],
     mode='lines',
     fill='tozeroy',
-    line=dict(width=2, color='#009900'),
-    marker=dict(size=6, color='white'),
-    name='Difference',
-    hovertemplate='Year: %{x}<br>Difference: %{y}<extra></extra>'
-)
-
-line_fig = go.Figure(data=[scatter_trace])
+    line=dict(width=2, color='#009900')
+))
 
 line_fig.update_layout(
-    title={
-        'text': 'Difference in Average Index Value Between Years',
-        'font': {'size': 18, 'color': 'white', 'family': 'Verdana'},
-        'x': 0.5,
-        'y': 0.95,
-    },
+    title='Difference in Average Index Value Between Years',
     xaxis_title='Year',
     yaxis_title='Difference',
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
     font=dict(color='white', family='Verdana', size=12),
-    width=800,
-    height=600,
+    margin=dict(l=20, r=20, t=70, b=20),
+    height=400
 )
 
 """
@@ -161,57 +106,32 @@ STACKED LINE PLOT
 """
 
 stack = pie.melt(id_vars=['Entity', 'Year'], var_name='Type', value_name='Proportion')
+stack = stack.sort_values(by=['Year', 'Type'])
 
 stack_fig = go.Figure()
-
-stack = stack.sort_values(by=['Year', 'Type'])
-types = stack['Type'].unique()
-
-color_discrete_sequence = ['#228B22', '#008000', '#006400', '#004400']
 legend_order = ['Authoritarian', 'Partially Authoritarian', 'Partial Democracy', 'Liberal Democracy']
+colors = ['#228B22', '#008000', '#006400', '#004400']
 
 for i, t in enumerate(legend_order):
-
     data = stack[stack['Type'] == t]
     stack_fig.add_trace(go.Scatter(
         x=data['Year'],
         y=data['Proportion'],
         mode='lines',
         stackgroup='one',
-        line=dict(width=0.5, color=color_discrete_sequence[i]),
-        name=t,
-        hovertemplate='Type: ' + t + '<br>Year: %{x}<br>Proportion: %{y:.2f}<extra></extra>',
+        line=dict(width=0.5, color=colors[i]),
+        name=t
     ))
 
 stack_fig.update_layout(
-    title={
-        'text': 'Proportion of each Type of Democracy Over Time',
-        'font': {
-            'size': 18,
-            'color': 'white',
-            'family': 'Verdana',
-        },
-        'x': 0.5,
-        'y': 0.95,
-    },
+    title='Proportion of each Type of Democracy Over Time',
     xaxis_title='Year',
     yaxis_title='Proportion',
-    hovermode='x unified',
-    showlegend=True,
-    legend=dict(
-        x=0,
-        y=0,
-        bgcolor='#222222',
-        traceorder='normal',
-        itemsizing='constant',
-        itemclick=False,
-        title=dict(text='Type'),
-    ),
-    font=dict(color='white', family='Verdana', size=12),
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
-    width=800,
-    height=600,
+    font=dict(color='white', family='Verdana', size=12),
+    margin=dict(l=20, r=20, t=70, b=20),
+    height=400
 )
 
 """
@@ -219,131 +139,58 @@ PIE CHART
 """
 
 years = pie['Year'].unique()
-
 data = []
+
 for year in years:
     year_data = pie[pie['Year'] == year]
-
     data.append(go.Pie(
         labels=['Authoritarian', 'Partially Authoritarian', 'Partial Democracy', 'Liberal Democracy'],
         values=[year_data['Authoritarian'].values[0], year_data['Partially Authoritarian'].values[0],
                 year_data['Partial Democracy'].values[0], year_data['Liberal Democracy'].values[0]],
         name=str(year),
         visible=False,
+        marker=dict(colors=['#003300', '#004400', '#006600', '#008800'])
     ))
 
-data[0]['visible'] = True  # Set the first year as visible
+data[0]['visible'] = True
 
-sliders = [{
-    'active': 0,
-    'currentvalue': {"prefix": "Year: "},
-    'pad': {"t": 50},
-    'steps': [{'label': str(year), 'method': 'update', 'args': [{'visible': [y == year for y in years]}]}
-              for year in years]
-}]
-
-layout_pie = go.Layout(
-    title={
-        'text': 'Proportion of Each Regime Type over the Years',
-        'font': {
-            'size': 18,
-            'color': 'white',
-            'family': 'Verdana',
-        },
-        'x': 0.5,
-        'y': 0.95,
-    },
-    sliders=sliders
-)
-
-pie_fig = go.Figure(data=data, layout=layout_pie)
+pie_fig = go.Figure(data=data)
 pie_fig.update_layout(
+    title='Proportion of Each Regime Type over the Years',
     plot_bgcolor='#222222',
     paper_bgcolor='#222222',
-    width=800,
-    height=600,
     font=dict(color='white', family='Verdana', size=12),
+    margin=dict(l=20, r=20, t=70, b=20),
+    height=400,
+    sliders=[{
+        'active': 0,
+        'currentvalue': {'prefix': 'Year: '},
+        'pad': {'t': 50},
+        'steps': [{'label': str(year), 'method': 'update', 'args': [{'visible': [y == year for y in years]}]} for year in years]
+    }]
 )
-pie_fig.update_traces(marker=dict(colors=['#003300', '#004400', '#006600', '#008800']))
 
 """
-END OF VISUALS START OF APP
+APP LAYOUT
 """
 
-app = Dash(__name__, external_stylesheets=['assets/style.css'])
-server = app.server
-
-# App Layout of each Graph and the Navbar
 app.layout = html.Div(
     className="dashboard",
     children=[
-        html.Div(
-            className="navbar",
-            children=[
-                html.Nav(
-                    children=[
-                        html.H1("DEMOCRATIC INDEX: Analysis and Predictions", className="dashboard-title")
-                    ] # Navigation Bar
-                )
-            ]
-        ),
-        html.Div(
-            className="content",
-            children=[
-                html.Div(
-                    className="graph-container",
-                    children=[
-                        dcc.Graph(figure=map_fig)
-                    ] # Map 
-                ),
-                html.Div(
-                    className="image-container",
-                    children=[
-                        html.Img(src="assets/what_is_dem.png", style={'width': '100%', 'height': '100%'}, className="image")
-                    ] # Democratic Index Explanation Image
-                ),
-                html.Div(
-                    className="subplots-container",
-                    children=[
-                        html.Div(
-                            className="subplot rounded-corners",
-                            children=[
-                                dcc.Graph(figure=line_fig)
-                            ]
-                        ),
-                        html.Div(
-                            className="subplot rounded-corners",
-                            children=[
-                                dcc.Graph(figure=stack_fig)
-                            ]
-                        )
-                    ]
-                ),
-                html.Div(
-                    className="subplots-container",
-                    children=[
-                        html.Div(
-                            className="subplot rounded-corners",
-                            children=[
-                                dcc.Graph(figure=pie_fig)
-                            ]
-                        ),
-                        html.Div(
-                            className="subplot rounded-corners",
-                            children=[
-                                dcc.Graph(figure=bar_fig)
-                            ]
-                        )
-                    ]
-                ),
-                html.Div(
-                    className="image-container",
-                    children=[
-                        html.Img(src="assets/sum.png", style={'width': '100%', 'height': '100%'}, className="image")
-                    ]
-                )
-            ]
-        )
+        html.Div(className="navbar", children=[html.Nav(html.H1("DEMOCRATIC INDEX: Analysis and Predictions", className="dashboard-title"))]),
+        html.Div(className="content", children=[
+            html.Div(className="graph-container", children=[dcc.Graph(figure=map_fig, style={'width': '100%', 'height': '80vh'})]),
+            html.Div(className="image-container", children=[html.Img(src="assets/what_is_dem.png", style={'width': '80vw'}, className="image")]),
+            html.Div(className="subplots-container", style={'rowGap': '5px', 'columnGap': '5px', 'width': '90vw', 'height':'auto'}, children=[
+                html.Div(className="subplot", style={'width': '50%'}, children=[dcc.Graph(figure=line_fig)]),
+                html.Div(className="subplot", style={'width': '50%'}, children=[dcc.Graph(figure=stack_fig)])
+            ]),
+            html.Div(className="subplots-container", style={'rowGap': '5px', 'columnGap': '5px', 'width': '90vw', 'height':'auto'}, children=[
+                html.Div(className="subplot", style={'width': '50%'}, children=[dcc.Graph(figure=pie_fig)]),
+                html.Div(className="subplot", style={'width': '50%'}, children=[dcc.Graph(figure=bar_fig)])
+            ]),
+            html.Div(className="image-container", children=[html.Img(src="assets/sum.png", style={'width': '80vw'}, className="image")])
+        ])
     ]
 )
 
